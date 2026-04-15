@@ -159,12 +159,35 @@ function bot_Servo_Motors_Basic_Fn (network_ReceivedString_FromControllerJoystic
                 }
             }
         }
-        // //jwc o roboQuest.powerMotorsViaBlueRedBlackPins(PortGroup_BlueRedBlack__PortIds__Enum.S1_MotorLeft__S0_MotorRight, motor_Power_ZERO_INT, motor_Power_ZERO_INT)
-        quest_Motors.quest_Set_PowerMotorsViaBlueRedBlackPins_Func(
-        quest_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight,
-        normal_accel_speed * tap_right_turn_bias,
-        normal_accel_speed * tap_left_turn_bias
-        )
+        if (u_turn_in_progress == 1) {
+            quest_Note_1.quest_Show_String_For_Note_Small_Func(
+            "Driver commanded end-of-lane U-turn"
+            )
+            quest_Note_1.quest_Show_String_For_Note_Small_Func(
+            "Command U turn motor speeds"
+            )
+            // //jwc o roboQuest.powerMotorsViaBlueRedBlackPins(PortGroup_BlueRedBlack__PortIds__Enum.S1_MotorLeft__S0_MotorRight, motor_Power_ZERO_INT, motor_Power_ZERO_INT)
+            quest_Motors.quest_Set_PowerMotorsViaBlueRedBlackPins_Func(
+            quest_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight,
+            18,
+            99
+            )
+            quest_Note_1.quest_Show_String_For_Note_Small_Func(
+            "After U-turn must restart accel curve from start"
+            )
+            // If the start speed is too high, the tires break static friction and one or both of them spin, which can make for squirrely behavior at start. In initial testing a starting speed of 20 and then gradual ramp up to 3,4,5... max produced a smooth acceleration that takes a little less than a second.
+            normal_accel_speed = normal_start_speed
+        } else {
+            quest_Note_1.quest_Show_String_For_Note_Small_Func(
+            "Command adjusted forward speeds"
+            )
+            // //jwc o roboQuest.powerMotorsViaBlueRedBlackPins(PortGroup_BlueRedBlack__PortIds__Enum.S1_MotorLeft__S0_MotorRight, motor_Power_ZERO_INT, motor_Power_ZERO_INT)
+            quest_Motors.quest_Set_PowerMotorsViaBlueRedBlackPins_Func(
+            quest_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight,
+            normal_accel_speed * tap_right_turn_bias,
+            normal_accel_speed * tap_left_turn_bias
+            )
+        }
     } else if (network_ReceivedString_FromControllerJoystick_Str_ParamIn == "backward") {
         images.createImage(`
             . . . . .
@@ -802,7 +825,7 @@ quest_Note_2.quest_Show_String_For_Note_Big_Func(
 quest_Note_2.quest_Show_String_For_Note_Small_Func(
 "... Range [21-255], Default = 1"
 )
-network_GroupChannel_MyBotAndController_Base0_Int = 78
+network_GroupChannel_MyBotAndController_Base0_Int = 74
 setup_Code_For_System_Func()
 quest_Note_1.quest_Show_String_For_Note_Big_Func(
 "Below, Setup Code for Teacher:"
@@ -813,8 +836,11 @@ normal_start_speed = 20
 // This variable controls the rate of the acceleration ramp-- how long the bot takes to get from zero to max. In initial testing 1 worked well, 2 produced tire slippage.
 accel_rate = 5
 max_normal_speed = 99
+quest_Note_1.quest_Show_String_For_Note_Small_Func(
+"For Swim Bot, \"Turbo\" drops speed for slower maneuvers"
+)
 // This value will determine the maximum speed to which the bot will accelerate before topping out. Valid range is 0 to 100.
-max_turbo_speed = 99
+max_turbo_speed = 60
 quest_Note_4.quest_Show_String_For_Note_Small_Func(
 "Tap-to-turn variables"
 )
