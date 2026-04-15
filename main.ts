@@ -42,37 +42,15 @@ function bot_Tap_To_Turn_fn (network_ReceivedString_FromControllerJoystick_Str_P
 }
 function bot_U_Turn (network_ReceivedString_FromControllerJoystick_Str_ParamIn: string) {
     if (network_ReceivedString_FromControllerJoystick_Str_ParamIn == "u_turn") {
-        if (u_turn_in_progress == 0) {
-            u_turn_in_progress = 1
-            images.createImage(`
-                . # # # #
-                . # . . #
-                . # . . #
-                # # # . .
-                . # . . .
-                `).showImage(0, 0)
-            // //jwc o roboQuest.powerMotorsViaBlueRedBlackPins(PortGroup_BlueRedBlack__PortIds__Enum.S1_MotorLeft__S0_MotorRight, motor_Power_ZERO_INT, motor_Power_ZERO_INT)
-            quest_Motors.quest_Set_PowerMotorsViaBlueRedBlackPins_Func(
-            quest_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight,
-            99,
-            19
-            )
-            basic.pause(100)
-            // //jwc o roboQuest.powerMotorsViaBlueRedBlackPins(PortGroup_BlueRedBlack__PortIds__Enum.S1_MotorLeft__S0_MotorRight, motor_Power_ZERO_INT, motor_Power_ZERO_INT)
-            quest_Motors.quest_Set_PowerMotorsViaBlueRedBlackPins_Func(
-            quest_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight,
-            0,
-            0
-            )
-        }
-    } else {
+        u_turn_in_progress = 1
         images.createImage(`
-            . . . . .
-            . . . . .
-            . . # . .
-            . . . . .
-            . . . . .
+            . # # # #
+            . # . . #
+            . # . . #
+            # # # . .
+            . # . . .
             `).showImage(0, 0)
+    } else {
         u_turn_in_progress = 0
     }
 }
