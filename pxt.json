@@ -1,6 +1,6 @@
 {
     "name": "Pathfinders_Swimbot_Proto_U_Turn",
-    "version": "2.11.0",
+    "version": "1.0.0",
     "description": "",
     "dependencies": {
         "core": "*",
